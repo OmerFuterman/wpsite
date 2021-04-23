@@ -17,5 +17,5 @@ func main() {
 }
 
 func getBooks(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode("hello there!")
+	json.NewEncoder(w).Encode("GENERAL KENOBI!")
 }
