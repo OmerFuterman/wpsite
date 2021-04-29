@@ -96,7 +96,7 @@ type searchParams struct {
 	Name string
 }
 
-func searchPeople(w http.ResponseWriter, r *http.Request) { //limit the query to a have a certain number, make it so the front end can choose how many records they get (using limit and offset)
+func searchPeople(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 
 	q, ok := params["q"]
