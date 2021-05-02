@@ -77,24 +77,47 @@ func main() {
 	origins := handlers.AllowedOrigins([]string{"*"})
 	//handlers, models, repositories (for queries), pkg(package, this will include utils, and any shared code)
 
-	router.HandleFunc("/people", getPeople).Methods("GET")
-	router.HandleFunc("/search", searchPeople).Methods("GET")
-	router.HandleFunc("/add", addPeople).Methods("POST")
+	router.HandleFunc("/people", getPeople).Methods("GET")       // /people?limit=$1&offset=$2 (this will display all people with a max results of limit being offset by offset)
+	router.HandleFunc("/search", searchPeople).Methods("GET")    // /search?q=$1&limit=$2&offset=$3 (this will query the database for results that include q in their name, max results limited by limit, being offset by offset)
+	router.HandleFunc("/add", addPeople).Methods("POST")         // /add (adds new record into databse, expects information in the body with the following items: description, gender, coollevel, name)
+	router.HandleFunc("/update", updatePerson).Methods("PUT")    // /update (updates an existing record in the datase, expects the following items in the body: id (this is the id of the record to be changed), description, gender, coollevel, name)
+	router.HandleFunc("/remove", removePerson).Methods("DELETE") // /remove?id=$1 (removes a record with id $1)
 
 	http.ListenAndServe(":8080", handlers.CORS(headers, methods, origins)(router))
 }
 
+type searchParams struct {
+	Id     string
+	Name   string
+	Limit  string
+	Offset string
+}
+
 func getPeople(w http.ResponseWriter, r *http.Request) {
 	people = []Person{}
+	params := r.URL.Query()
 
-	rows, err := db.Query("select * from cool_people")
+	limit, ok := params["limit"]
+	if !ok {
+		json.NewEncoder(w).Encode(errors.New("no limit given"))
+		return
+	}
+
+	offset, ok := params["offset"]
+	if !ok {
+		json.NewEncoder(w).Encode(errors.New("no offset given"))
+		return
+	}
+
+	paramsSearch := searchParams{
+		Limit:  limit[0],
+		Offset: offset[0],
+	}
+
+	rows, err := db.Query("select * from cool_people limit $1 offset $2", paramsSearch.Limit, paramsSearch.Offset)
 	logUnFatal(err, w)
 
 	loopOverRows(rows, w)
-}
-
-type searchParams struct {
-	Name string
 }
 
 func searchPeople(w http.ResponseWriter, r *http.Request) {
@@ -106,14 +129,29 @@ func searchPeople(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	paramsSearch := searchParams{
-		Name: q[0],
+	limit, ok := params["limit"]
+	if !ok {
+		json.NewEncoder(w).Encode(errors.New("no limit given"))
+		return
 	}
 
-	query := []string{"select * from cool_people where upper(name) like upper('%", paramsSearch.Name, "%')"}
+	offset, ok := params["offset"]
+	if !ok {
+		json.NewEncoder(w).Encode(errors.New("no offset given"))
+		return
+	}
+
+	paramsSearch := searchParams{
+		Name:   q[0],
+		Limit:  limit[0],
+		Offset: offset[0],
+	}
+
+	query := []string{"select * from cool_people where upper(name) like upper('%", paramsSearch.Name, "%') limit ", paramsSearch.Limit, " offset ", paramsSearch.Offset}
 	sqlQuery := strings.Join(query, "")
 
 	rows, err := db.Query(sqlQuery)
+
 	logUnFatal(err, w)
 
 	loopOverRows(rows, w)
@@ -130,4 +168,39 @@ func addPeople(w http.ResponseWriter, r *http.Request) {
 	logUnFatal(err, w)
 
 	json.NewEncoder(w).Encode(personID)
+}
+
+func updatePerson(w http.ResponseWriter, r *http.Request) {
+	var person Person
+	json.NewDecoder(r.Body).Decode(&person)
+
+	result, err := db.Exec("update cool_people set description=$1, gender=$2, coollevel=$3, name=$4 where id=$5 RETURNING id;",
+		&person.Description, &person.Gender, &person.CoolLevel, &person.Name, &person.ID)
+	logUnFatal(err, w)
+
+	rowsUpdated, err := result.RowsAffected()
+	logUnFatal(err, w)
+
+	json.NewEncoder(w).Encode(rowsUpdated)
+}
+
+func removePerson(w http.ResponseWriter, r *http.Request) {
+	params := r.URL.Query()
+
+	id, ok := params["id"]
+	if !ok {
+		json.NewEncoder(w).Encode(errors.New("no id given"))
+	}
+
+	paramsSearch := searchParams{
+		Id: id[0],
+	}
+
+	result, err := db.Exec("delete from cool_people where id=$1;", paramsSearch.Id)
+	logFatal(err)
+
+	rowsDeleted, err := result.RowsAffected()
+	logFatal(err)
+
+	json.NewEncoder(w).Encode(rowsDeleted)
 }
