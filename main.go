@@ -79,6 +79,7 @@ func main() {
 
 	router.HandleFunc("/people", getPeople).Methods("GET")
 	router.HandleFunc("/search", searchPeople).Methods("GET")
+	router.HandleFunc("/add", addPeople).Methods("POST")
 
 	http.ListenAndServe(":8080", handlers.CORS(headers, methods, origins)(router))
 }
@@ -116,4 +117,17 @@ func searchPeople(w http.ResponseWriter, r *http.Request) {
 	logUnFatal(err, w)
 
 	loopOverRows(rows, w)
+}
+
+func addPeople(w http.ResponseWriter, r *http.Request) {
+	var person Person
+	var personID int
+
+	json.NewDecoder(r.Body).Decode(&person)
+
+	err := db.QueryRow("insert into cool_people (description, gender, coollevel, name) values($1, $2, $3, $4) RETURNING id;",
+		person.Description, person.Gender, person.CoolLevel, person.Name).Scan(&personID)
+	logUnFatal(err, w)
+
+	json.NewEncoder(w).Encode(personID)
 }
