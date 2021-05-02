@@ -190,10 +190,19 @@ func removePerson(w http.ResponseWriter, r *http.Request) {
 	id, ok := params["id"]
 	if !ok {
 		json.NewEncoder(w).Encode(errors.New("no id given"))
+		return
 	}
 
 	paramsSearch := searchParams{
 		Id: id[0],
+	}
+	if paramsSearch.Id == "1" {
+		json.NewEncoder(w).Encode(errors.New("omer is a god, i wouldn't dare delete him"))
+		return
+	}
+	if paramsSearch.Id == "2" {
+		json.NewEncoder(w).Encode(errors.New("carly is under omers protection"))
+		return
 	}
 
 	result, err := db.Exec("delete from cool_people where id=$1;", paramsSearch.Id)
