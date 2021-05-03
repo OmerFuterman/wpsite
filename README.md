@@ -83,7 +83,7 @@ To get a local copy up and running follow these simple steps.
 This is an example of how to list things you need to use the software and how to install them.
 * Golang
   ```sh
-  guide to install Golang on your local device: https://golang.org/doc/install
+  guide to install Golang on your personal device: https://golang.org/doc/install
   ```
 
 ### Installation
@@ -103,7 +103,7 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    go mod init your_directory_name
    go mod tidy
-   now \do step number 2 again
+   now finish step number 2 again
    ```
 
 
@@ -142,10 +142,16 @@ This route will add a new record to the database
 
 This route expects the following information in the body:
 <ul>
-  <li><strong>description</strong> string (a description of the person)</li>
-  <li><strong>gender</strong> string (the gender of the person) Accepts: male, female, other, or prefer not to say)</li>
-  <li><strong>coollevel</strong> boolean (how cool the person is) Accepts: true or false)</li>
-  <li><strong>name</strong> string (the name of the person)</li>
+  <li><strong>description</strong> | string 
+    <br>- A description of the person</li>
+  <li><strong>gender</strong> | string 
+    <br>- The gender of the person 
+    <br>- Accepts: male, female, other, or prefer not to say</li>
+  <li><strong>coollevel</strong> | boolean 
+    <br>- How cool the person is 
+    <br>- Accepts: true or false</li>
+  <li><strong>name</strong> | string 
+    <br>- The name of the person</li>
 </ul>
 
 
@@ -155,11 +161,19 @@ This route will update an exitsting record on the database
 
 This route expects the following information in the body:
 <ul>
-  <li><strong>id</strong> int (the id of the record being altered) Accepts: any positive int</li>
-  <li><strong>descrption</strong> string (a description of the person)</li>
-  <li><strong>gender</strong> string (the gender of the person being altered) Accepts: male, female, other, or prefer not to say)</li>
-  <li><strong>coollevel</strong> boolean (how cool the person is) Accepts: true or false)</li>
-  <li><strong>name</strong> string (the name of the person)</li>
+  <li><strong>id</strong> | int 
+    <br>- The id of the record being altered 
+    <br>- Accepts: any positive int</li>
+  <li><strong>descrption</strong> | string 
+    <br>- A description of the person</li>
+  <li><strong>gender</strong> | string 
+    <br>- The gender of the person being altered 
+    <br>- Accepts: male, female, other, or prefer not to say</li>
+  <li><strong>coollevel</strong> | boolean 
+    <br>- How cool the person is 
+    <br>- Accepts: true or false</li>
+  <li><strong>name</strong> | string 
+    <br>- The name of the person</li>
 </ul>
 
 
