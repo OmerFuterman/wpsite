@@ -142,16 +142,16 @@ This route will add a new record to the database
 
 This route expects the following information in the body:
 <ul>
-  <li><strong>description</strong> string 
-    <br>- (a description of the person)</li>
-  <li><strong>gender</strong> string 
-    <br>- (the gender of the person) 
+  <li><strong>description</strong> | string 
+    <br>- A description of the person</li>
+  <li><strong>gender</strong> | string 
+    <br>- The gender of the person 
     <br>- Accepts: male, female, other, or prefer not to say</li>
-  <li><strong>coollevel</strong> boolean 
-    <br>- (how cool the person is) 
+  <li><strong>coollevel</strong> | boolean 
+    <br>- How cool the person is 
     <br>- Accepts: true or false</li>
-  <li><strong>name</strong> string 
-    <br>- (the name of the person)</li>
+  <li><strong>name</strong> | string 
+    <br>- The name of the person</li>
 </ul>
 
 
@@ -161,19 +161,19 @@ This route will update an exitsting record on the database
 
 This route expects the following information in the body:
 <ul>
-  <li><strong>id</strong> int 
-    <br>- (the id of the record being altered) 
+  <li><strong>id</strong> | int 
+    <br>- The id of the record being altered 
     <br>- Accepts: any positive int</li>
-  <li><strong>descrption</strong> string 
-    <br>- (a description of the person)</li>
-  <li><strong>gender</strong> string 
-    <br>- (the gender of the person being altered) 
+  <li><strong>descrption</strong> | string 
+    <br>- A description of the person</li>
+  <li><strong>gender</strong> | string 
+    <br>- The gender of the person being altered 
     <br>- Accepts: male, female, other, or prefer not to say</li>
-  <li><strong>coollevel</strong> boolean 
-    <br>- (how cool the person is) 
+  <li><strong>coollevel</strong> | boolean 
+    <br>- How cool the person is 
     <br>- Accepts: true or false</li>
-  <li><strong>name</strong> string 
-    <br>- (the name of the person)</li>
+  <li><strong>name</strong> | string 
+    <br>- The name of the person</li>
 </ul>
 
 
