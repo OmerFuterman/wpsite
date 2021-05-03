@@ -83,7 +83,7 @@ To get a local copy up and running follow these simple steps.
 This is an example of how to list things you need to use the software and how to install them.
 * Golang
   ```sh
-  guide to install Golang on your local device: https://golang.org/doc/install
+  guide to install Golang on your personal device: https://golang.org/doc/install
   ```
 
 ### Installation
