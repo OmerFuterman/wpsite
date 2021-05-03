@@ -1,5 +1,5 @@
 <!--
-*** Thanks for checking out my prject. If you have a question or suggestion,
+*** Thanks for checking out my project. If you have a question or suggestion,
 *** please email me at omerfu@gmail.com, or fork the repo and create a pull request
 *** or simply open an issue with the tag "enhancement".
 *** Thanks again!
@@ -54,11 +54,8 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -106,7 +103,7 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    go mod init your_directory_name
    go mod tidy
-   now do step #2 againWRITE ABOUT GO RUN MAINGO
+   now \do step number 2 again
    ```
 
 
@@ -117,7 +114,7 @@ This is an example of how to list things you need to use the software and how to
 Please keep in mind that if you are running a local copy you will have to start up your server to get a response. Do this with the following command:
   go run main.go (make sure you are in the project directory)
   
-If you are spinning up this project on a local device your url for the API will be: http://localhost:8080/
+If you are spinning up this project on a local device your url for the API will be: http://localhost:8080/<br>
 If you are sending requests to my public API the url will be: https://wpsite-e2xqf.ondigitalocean.app/
 
 
@@ -145,10 +142,10 @@ This route will add a new record to the database
 
 This route expects the following information in the body:
 <ul>
-  <li><strong>string</strong> description (a description of the person being added)</li>
-  <li><strong>string</strong> gender (the gender of the person being added) Accepts: male, female, other, or prefer not to say)</li>
-  <li><strong>boolean</strong> coollevel (how cool the person is) Accepts: true or false)</li>
-  <li><strong>string</strong> name (the name of the person being added)</li>
+  <li><strong>description</strong> string (a description of the person)</li>
+  <li><strong>gender</strong> string (the gender of the person) Accepts: male, female, other, or prefer not to say)</li>
+  <li><strong>coollevel</strong> boolean (how cool the person is) Accepts: true or false)</li>
+  <li><strong>name</strong> string (the name of the person)</li>
 </ul>
 
 
@@ -158,11 +155,11 @@ This route will update an exitsting record on the database
 
 This route expects the following information in the body:
 <ul>
-  <li><strong>int</strong> id (the id of the record being altered) Accepts: any positive int</li>
-  <li><strong>string</strong> description (a description of the person being added)</li>
-  <li><strong>string</strong> gender (the gender of the person being added) Accepts: male, female, other, or prefer not to say)</li>
-  <li><strong>boolean</strong> coollevel (how cool the person is) Accepts: true or false)</li>
-  <li><strong>string</strong> name (the name of the person being added)</li>
+  <li><strong>id</strong> int (the id of the record being altered) Accepts: any positive int</li>
+  <li><strong>descrption</strong> string (a description of the person)</li>
+  <li><strong>gender</strong> string (the gender of the person being altered) Accepts: male, female, other, or prefer not to say)</li>
+  <li><strong>coollevel</strong> boolean (how cool the person is) Accepts: true or false)</li>
+  <li><strong>name</strong> string (the name of the person)</li>
 </ul>
 
 
