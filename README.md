@@ -17,7 +17,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/OmerFuterman/wpsite">
-    <img src="/resources/images/go-logo.png" alt="Logo" width="80" height="80">
+    <img src="/resources/images/go-logo.png" alt="Logo" width="auto" height="80">
   </a>
 
   <h3 align="center">Cool People API</h3>
