@@ -163,6 +163,11 @@ func addPeople(w http.ResponseWriter, r *http.Request) {
 
 	json.NewDecoder(r.Body).Decode(&person)
 
+	if person.Gender != "male" && person.Gender != "female" && person.Gender != "other" && person.Gender != "prefer not to say" {
+		json.NewEncoder(w).Encode(errors.New("gender option not available yet"))
+		return
+	}
+
 	err := db.QueryRow("insert into cool_people (description, gender, coollevel, name) values($1, $2, $3, $4) RETURNING id;",
 		person.Description, person.Gender, person.CoolLevel, person.Name).Scan(&personID)
 	logUnFatal(err, w)
@@ -173,6 +178,15 @@ func addPeople(w http.ResponseWriter, r *http.Request) {
 func updatePerson(w http.ResponseWriter, r *http.Request) {
 	var person Person
 	json.NewDecoder(r.Body).Decode(&person)
+
+	if person.ID == 1 {
+		json.NewEncoder(w).Encode(errors.New("omer is a god, i wouldnt dare change his information"))
+		return
+	}
+	if person.ID == 2 {
+		json.NewEncoder(w).Encode(errors.New("carly is under omers protection and cant be changed"))
+		return
+	}
 
 	result, err := db.Exec("update cool_people set description=$1, gender=$2, coollevel=$3, name=$4 where id=$5 RETURNING id;",
 		&person.Description, &person.Gender, &person.CoolLevel, &person.Name, &person.ID)
