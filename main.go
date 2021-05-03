@@ -99,14 +99,12 @@ func getPeople(w http.ResponseWriter, r *http.Request) {
 
 	limit, ok := params["limit"]
 	if !ok {
-		json.NewEncoder(w).Encode(errors.New("no limit given"))
-		return
+		limit = append(limit, "50")
 	}
 
 	offset, ok := params["offset"]
 	if !ok {
-		json.NewEncoder(w).Encode(errors.New("no offset given"))
-		return
+		offset = append(offset, "0")
 	}
 
 	paramsSearch := searchParams{
@@ -131,14 +129,12 @@ func searchPeople(w http.ResponseWriter, r *http.Request) {
 
 	limit, ok := params["limit"]
 	if !ok {
-		json.NewEncoder(w).Encode(errors.New("no limit given"))
-		return
+		limit = append(limit, "50")
 	}
 
 	offset, ok := params["offset"]
 	if !ok {
-		json.NewEncoder(w).Encode(errors.New("no offset given"))
-		return
+		offset = append(offset, "0")
 	}
 
 	paramsSearch := searchParams{
