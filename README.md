@@ -103,7 +103,7 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    go mod init your_directory_name
    go mod tidy
-   now \do step number 2 again
+   now finish step number 2 again
    ```
 
 
