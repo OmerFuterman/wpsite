@@ -79,7 +79,7 @@ func main() {
 
 	router.HandleFunc("/people", getPeople).Methods("GET")       // /people?limit=$1&offset=$2 (this will display all people with a max results of limit being offset by offset)
 	router.HandleFunc("/search", searchPeople).Methods("GET")    // /search?q=$1&limit=$2&offset=$3 (this will query the database for results that include q in their name, max results limited by limit, being offset by offset)
-	router.HandleFunc("/add", addPeople).Methods("POST")         // /add (adds new record into databse, expects information in the body with the following items: description, gender, coollevel, name)
+	router.HandleFunc("/add", addPeople).Methods("POST")         // /add (adds new record into database, expects information in the body with the following items: description, gender, coollevel, name)
 	router.HandleFunc("/update", updatePerson).Methods("PUT")    // /update (updates an existing record in the datase, expects the following items in the body: id (this is the id of the record to be changed), description, gender, coollevel, name)
 	router.HandleFunc("/remove", removePerson).Methods("DELETE") // /remove?id=$1 (removes a record with id $1)
 
@@ -159,10 +159,10 @@ func addPeople(w http.ResponseWriter, r *http.Request) {
 
 	json.NewDecoder(r.Body).Decode(&person)
 
-	if person.Gender != "male" && person.Gender != "female" && person.Gender != "other" && person.Gender != "prefer not to say" {
-		json.NewEncoder(w).Encode(errors.New("gender option not available yet"))
-		return
-	}
+	// if person.Gender != "male" && person.Gender != "female" && person.Gender != "other" && person.Gender != "prefer not to say" {
+	// 	json.NewEncoder(w).Encode(errors.New("gender option not available yet"))
+	// 	return
+	// }
 
 	err := db.QueryRow("insert into cool_people (description, gender, coollevel, name) values($1, $2, $3, $4) RETURNING id;",
 		person.Description, person.Gender, person.CoolLevel, person.Name).Scan(&personID)
