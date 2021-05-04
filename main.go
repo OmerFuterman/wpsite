@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/gorilla/handlers"
@@ -204,10 +204,10 @@ func removePerson(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i := range id {
-
+	for _, v := range id {
+		fmt.Print(v)
 		paramsSearch := searchParams{
-			Id: strconv.Itoa(i),
+			Id: v,
 		}
 
 		if paramsSearch.Id == "1" {
