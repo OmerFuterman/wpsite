@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	gotenv.Load() //loads all variable from env files
+	gotenv.Load()
 }
 
 func main() {
