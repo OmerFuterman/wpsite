@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
-	"errors"
 	"wpsite/models"
 	personRepository "wpsite/repository/person"
 	"wpsite/utils"
@@ -43,7 +42,7 @@ func (c Controller) GetPeople(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.SendError(w, http.StatusInternalServerError, error) //500
 			return
 		}
 
@@ -61,7 +60,8 @@ func (c Controller) SearchPeople(db *sql.DB) http.HandlerFunc {
 
 		q, ok := params["q"]
 		if !ok {
-			json.NewEncoder(w).Encode(errors.New("no values given"))
+			error.Message = "No values given"
+			utils.SendError(w, http.StatusInternalServerError, error) //500
 			return
 		}
 
@@ -87,7 +87,7 @@ func (c Controller) SearchPeople(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.SendError(w, http.StatusInternalServerError, error) //500
 			return
 		}
 
@@ -109,15 +109,13 @@ func (c Controller) AddPeople(db *sql.DB) http.HandlerFunc {
 		// 	return
 		// }
 
-		json.NewEncoder(w).Encode(person)
-
 		people = []models.Person{}
 		personRepo := personRepository.PersonRepository{}
 		personID, err := personRepo.AddPeople(db, person)
 
 		if err != nil {
 			error.Message = "Server error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.SendError(w, http.StatusInternalServerError, error) //500
 			return
 		}
 
@@ -134,11 +132,13 @@ func (c Controller) UpdatePerson(db *sql.DB) http.HandlerFunc {
 		json.NewDecoder(r.Body).Decode(&person)
 
 		if person.ID == 1 {
-			json.NewEncoder(w).Encode(errors.New("omer is a god, i wouldnt dare change his information"))
+			error.Message = "Omer is a god, I wouldnt dare change his information"
+			utils.SendError(w, http.StatusBadRequest, error) //400
 			return
 		}
 		if person.ID == 2 {
-			json.NewEncoder(w).Encode(errors.New("carly is under omers protection and cant be changed"))
+			error.Message = "Carly is under omer's protection and can't be changed"
+			utils.SendError(w, http.StatusBadRequest, error) //400
 			return
 		}
 
@@ -148,7 +148,7 @@ func (c Controller) UpdatePerson(db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 			error.Message = "Server error"
-			utils.SendError(w, http.StatusInternalServerError, error)
+			utils.SendError(w, http.StatusInternalServerError, error) //500
 			return
 		}
 
@@ -165,7 +165,8 @@ func (c Controller) RemovePerson(db *sql.DB) http.HandlerFunc {
 
 		id, ok := params["id"]
 		if !ok {
-			json.NewEncoder(w).Encode(errors.New("no id given"))
+			error.Message = "No ID given"
+			utils.SendError(w, http.StatusBadRequest, error) //400
 			return
 		}
 
@@ -175,26 +176,34 @@ func (c Controller) RemovePerson(db *sql.DB) http.HandlerFunc {
 			}
 
 			if params.Id == "1" {
-				json.NewEncoder(w).Encode(errors.New("omer is a god, i wouldn't dare delete him"))
+				error.Message = "Omer is a god, I wouldn't dare delete him"
+				utils.SendError(w, http.StatusBadRequest, error) //400
 				return
 			}
 			if params.Id == "2" {
-				json.NewEncoder(w).Encode(errors.New("carly is under omers protection"))
+				error.Message = "Carly is under Omer's protection"
+				utils.SendError(w, http.StatusBadRequest, error) //400
 				return
 			}
 
 			people = []models.Person{}
 			personRepo := personRepository.PersonRepository{}
-			personID, err := personRepo.RemovePerson(db, params)
+			rowsDeleted, err := personRepo.RemovePerson(db, params)
 
 			if err != nil {
 				error.Message = "Server error"
-				utils.SendError(w, http.StatusInternalServerError, error)
+				utils.SendError(w, http.StatusInternalServerError, error) //500
+				return
+			}
+
+			if rowsDeleted == 0 {
+				error.Message = "Not Found"
+				utils.SendError(w, http.StatusNotFound, error) //404
 				return
 			}
 
 			w.Header().Set("Content-Type", "application/json")
-			utils.SendSuccess(w, personID)
+			utils.SendSuccess(w, rowsDeleted)
 		}
 
 	}
